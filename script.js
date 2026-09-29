@@ -10,6 +10,14 @@ const result =
 const moonVisual =
     document.getElementById("moon-visual");
 
+const today = new Date();
+
+const todayString =
+    today.toISOString().split("T")[0];
+
+birthdateInput.max = todayString;
+
+
 const phaseName =
     document.getElementById("phase-name");
 
