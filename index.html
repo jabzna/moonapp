@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Moon Phase</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="moon-app">
+
+        <header>
+            <h1>Your Moon Phase</h1>
+            <p>Discover what the Moon looked like on your birthday.</p>
+        </header>
+
+        <section class="date-section">
+
+            <label for="birthdate">
+                Enter your birth date
+            </label>
+
+            <input
+                type="date"
+                id="birthdate"
+                name="birthdate"
+            >
+
+            <button id="searchButton">
+                Reveal My Moon
+            </button>
+
+        </section>
+
+        <section
+            id="result"
+            class="result"
+            aria-live="polite"
+        >
+
+            <div class="moon-image-container">
+                <img
+                    id="moonImage"
+                    src=""
+                    alt=""
+                >
+            </div>
+
+            <h2 id="phaseName"></h2>
+
+            <p id="phaseDescription"></p>
+
+            <div class="moon-details">
+
+                <div>
+                    <span>Birth Date</span>
+                    <strong id="displayDate"></strong>
+                </div>
+
+                <div>
+                    <span>Illumination</span>
+                    <strong id="illumination"></strong>
+                </div>
+
+                <div>
+                    <span>Moon Age</span>
+                    <strong id="moonAge"></strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <p id="errorMessage" class="error"></p>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
