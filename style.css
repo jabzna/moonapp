@@ -10,8 +10,8 @@ body {
     background:
         radial-gradient(
             circle at top,
-            #202a50,
-            #080b18 60%
+            #319692,
+            #032120 60%
         );
 
     color: white;
@@ -69,7 +69,7 @@ button {
     border: none;
     border-radius: 8px;
 
-    background: #7667ff;
+    background: #0d7270;
 
     color: white;
 
@@ -79,7 +79,7 @@ button {
 }
 
 button:hover {
-    background: #6254e8;
+    background: #0a6664;
 }
 
 .result {
@@ -98,6 +98,7 @@ button:hover {
     height: 100%;
     display: block;
 }
+
 
 #phase-name {
     font-size: 2rem;
