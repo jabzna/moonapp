@@ -1,216 +1,179 @@
-const birthdateInput =
-    document.getElementById("birthdate");
+const birthdateInput = document.getElementById("birthdate");
 
-const revealButton =
-    document.getElementById("reveal-button");
+const revealButton = document.getElementById("reveal-button");
 
-const result =
-    document.getElementById("result");
+const result = document.getElementById("result");
 
-const moonVisual =
-    document.getElementById("moon-visual");
+const moonVisual = document.getElementById("moon-visual");
 
-const phaseName =
-    document.getElementById("phase-name");
+const phaseName = document.getElementById("phase-name");
 
-const phaseDescription =
-    document.getElementById("phase-description");
+const phaseDescription = document.getElementById("phase-description");
 
-const illumination =
-    document.getElementById("illumination");
+const illumination = document.getElementById("illumination");
 
-const moonAge =
-    document.getElementById("moon-age");
+const moonAge = document.getElementById("moon-age");
 
-const errorMessage =
-    document.getElementById("error-message");
+const zodiacSign = document.getElementById("zodiac-sign");
+
+const errorMessage = document.getElementById("error-message");
+
+const today = new Date();
+
+const todayString = today.toISOString().split("T")[0];
+
+birthdateInput.max = todayString;
 
 
-revealButton.addEventListener(
-    "click",
-    getMoonPhase
-);
+revealButton.addEventListener("click", getMoonPhase);
 
 
 async function getMoonPhase() {
-
-    const birthdate =
-        birthdateInput.value;
-
+    const birthdate = birthdateInput.value;
 
     if (!birthdate) {
-
-        showError(
-            "Please select your birth date."
-        );
+        showError("Please select your birth date.");
 
         return;
     }
-
 
     clearError();
 
     revealButton.disabled = true;
 
-    revealButton.textContent =
-        "Finding your Moon...";
-
+    revealButton.textContent = "Finding your Moon...";
 
     try {
-
-        const response =
-            await fetch(
-                `/api/moon?date=${birthdate}`
-            );
-
+        const response = await fetch(`/api/moon?date=${birthdate}`);
 
         if (!response.ok) {
-
-            throw new Error(
-                "Unable to retrieve Moon data."
-            );
+            throw new Error("Unable to retrieve Moon data.");
         }
 
-
-        const data =
-            await response.json();
-
+        const data = await response.json();
 
         displayMoon(data);
-
-
     } catch (error) {
-
         console.error(error);
 
-        showError(
-            "We couldn't retrieve your Moon phase. Please try again."
-        );
-
-
+        showError("We couldn't retrieve your Moon phase. Please try again.");
     } finally {
-
         revealButton.disabled = false;
 
-        revealButton.textContent =
-            "Reveal My Moon";
-
+        revealButton.textContent = "Reveal My Moon";
     }
 }
 
 
 function displayMoon(data) {
 
-   
-    phaseName.textContent =
-        data.phase.name;
+    phaseName.textContent = data.phase.name;
+    const illuminationPercent = Math.round(data.phase.illumination * 100);
 
+    illumination.textContent = `${illuminationPercent}%`;
 
- 
+    moonAge.textContent = `${data.phase.age_days.toFixed(1)} days`;
 
-    const illuminationPercent =
-        Math.round(
-            data.phase.illumination * 100
-        );
+    const zodiac = getZodiacSign(birthdateInput.value);
+    zodiacSign.textContent = zodiac;
 
-
-    illumination.textContent =
-        `${illuminationPercent}%`;
-
-
-   
-
-    moonAge.textContent =
-        `${data.phase.age_days.toFixed(1)} days`;
-
-
-
-    if (
-        data.moon_visual &&
-        data.moon_visual.svg
-    ) {
-
-        moonVisual.innerHTML =
-            data.moon_visual.svg;
-
+    if (data.moon_visual && data.moon_visual.svg) {
+        moonVisual.innerHTML = data.moon_visual.svg;
     }
 
 
-    
+    phaseDescription.textContent = getPhaseDescription(data.phase.name);
 
-    phaseDescription.textContent =
-        getPhaseDescription(
-            data.phase.name
-        );
-
-
-   
-
-    if (
-        data.special_moon &&
-        data.special_moon.labels &&
-        data.special_moon.labels.length > 0
-    ) {
-
-        phaseDescription.textContent +=
-            ` ${data.special_moon.labels.join(", ")}.`;
-
+    if (data.special_moon && data.special_moon.labels && data.special_moon.labels.length > 0) {
+        phaseDescription.textContent += ` ${data.special_moon.labels.join(", ")}.`;
     }
-
 
     result.hidden = false;
 }
 
+function getZodiacSign(dateString) {
+    const date = new Date(`${dateString}T00:00:00`);
+
+    const month = date.getMonth() + 1;
+
+    const day = date.getDate();
+
+    if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {
+        return "Aries";
+    }
+
+    if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) {
+        return "Taurus";
+    }
+
+    if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) {
+        return "Gemini";
+    }
+
+    if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) {
+        return "Cancer";
+    }
+
+    if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) {
+        return "Leo";
+    }
+
+    if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) {
+        return "Virgo";
+    }
+
+    if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) {
+        return "Libra";
+    }
+
+    if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) {
+        return "Scorpio";
+    }
+
+    if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {
+        return "Sagittarius";
+    }
+
+    if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
+        return "Capricorn";
+    }
+
+    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
+        return "Aquarius";
+    }
+
+    return "Pisces";
+}
 
 function getPhaseDescription(phase) {
-
     const descriptions = {
+        "New Moon": "The Moon was in its new moon phase.",
 
-        "New Moon":
-            "The Moon was in its new moon phase.",
+        "Waxing Crescent": "The illuminated portion of the Moon was growing.",
 
-        "Waxing Crescent":
-            "The illuminated portion of the Moon was growing.",
+        "First Quarter": "About half of the Moon was illuminated.",
 
-        "First Quarter":
-            "About half of the Moon was illuminated.",
+        "Waxing Gibbous": "More than half of the Moon was illuminated and growing.",
 
-        "Waxing Gibbous":
-            "More than half of the Moon was illuminated and growing.",
+        "Full Moon": "The Moon was fully illuminated.",
 
-        "Full Moon":
-            "The Moon was fully illuminated.",
+        "Waning Gibbous": "More than half of the Moon was illuminated and decreasing.",
 
-        "Waning Gibbous":
-            "More than half of the Moon was illuminated and decreasing.",
+        "Last Quarter": "About half of the Moon was illuminated.",
 
-        "Last Quarter":
-            "About half of the Moon was illuminated.",
+        "Third Quarter": "About half of the Moon was illuminated.",
 
-        "Third Quarter":
-            "About half of the Moon was illuminated.",
-
-        "Waning Crescent":
-            "Only a small portion of the Moon was illuminated."
+        "Waning Crescent": "Only a small portion of the Moon was illuminated."
     };
 
-
-    return descriptions[phase] ||
-        "This was the Moon's phase on your birthday.";
+    return descriptions[phase] || "This was the Moon's phase on your birthday.";
 }
 
 
 function showError(message) {
-
-    errorMessage.textContent =
-        message;
-
+    errorMessage.textContent = message;
 }
 
-
 function clearError() {
-
-    errorMessage.textContent =
-        "";
-
+    errorMessage.textContent = "";
 }
