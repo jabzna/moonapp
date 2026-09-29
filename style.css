@@ -1,16 +1,25 @@
-
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
+
     min-height: 100vh;
 
-    background: #080b18;
+    background:
+        radial-gradient(
+            circle at top,
+            #202a50,
+            #080b18 60%
+        );
+
     color: white;
 
-    font-family: Arial, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     display: flex;
     justify-content: center;
@@ -18,107 +27,119 @@ body {
 }
 
 .moon-app {
-    width: min(90%, 700px);
+    width: min(90%, 650px);
+
     text-align: center;
+
+    padding: 40px 20px;
 }
 
-header h1 {
+h1 {
     font-size: 3rem;
     margin-bottom: 10px;
 }
 
-header p {
-    color: #aeb5cc;
+.moon-app > p {
+    color: #aeb7d0;
 }
 
-.date-section {
+.date-picker {
     margin: 40px 0;
 }
 
-.date-section label {
+.date-picker label {
     display: block;
     margin-bottom: 10px;
 }
 
 input[type="date"] {
     padding: 14px;
-    border-radius: 8px;
+
     border: none;
+    border-radius: 8px;
+
     font-size: 16px;
 }
 
 button {
-    padding: 14px 22px;
+    padding: 14px 20px;
+
     margin-left: 8px;
 
     border: none;
     border-radius: 8px;
 
-    background: #7c6cff;
+    background: #7667ff;
+
     color: white;
+
+    font-size: 16px;
 
     cursor: pointer;
 }
 
 button:hover {
-    background: #6658df;
+    background: #6254e8;
 }
 
 .result {
-    display: none;
+    margin-top: 40px;
 }
 
-.result.visible {
-    display: block;
+#moon-visual {
+    width: 280px;
+    height: 280px;
+
+    margin: 0 auto 20px;
 }
 
-.moon-image-container {
-    margin: 30px auto;
+#moon-visual svg {
+    width: 100%;
+    height: 100%;
 }
 
-.moon-image-container img {
-    width: 250px;
-    height: 250px;
-    object-fit: contain;
-}
-
-#phaseName {
+#phase-name {
     font-size: 2rem;
 }
 
-#phaseDescription {
-    color: #aeb5cc;
+#phase-description {
+    color: #aeb7d0;
 }
 
-.moon-details {
+.details {
     display: flex;
+
     justify-content: center;
+
     gap: 20px;
 
     margin-top: 30px;
 }
 
-.moon-details div {
+.details div {
+    background: rgba(255, 255, 255, 0.06);
+
     padding: 20px;
 
-    background: #11162a;
     border-radius: 12px;
+
+    min-width: 130px;
 }
 
-.moon-details span {
+.details span {
     display: block;
 
-    color: #8e96b0;
+    color: #8f98b3;
+
     font-size: 14px;
 
     margin-bottom: 8px;
 }
 
-.moon-details strong {
+.details strong {
     font-size: 18px;
 }
 
 .error {
     color: #ff7777;
-    margin-top: 20px;
 }
